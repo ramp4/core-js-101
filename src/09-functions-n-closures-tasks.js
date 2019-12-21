@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable func-names */
 /* *********************************************************************************************
  *                                                                                             *
  * Plese read the following tutorial before implementing tasks:                                *
