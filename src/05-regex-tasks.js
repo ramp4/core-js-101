@@ -32,7 +32,7 @@
  * @return {RegExp}
  */
 function getRegexForGuid() {
-  throw new Error('Not implemented');
+  return /{[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}}/;
 }
 
 
@@ -48,13 +48,51 @@ function getRegexForGuid() {
  *  'slap two'                'part'
  *  'respite'
  *
- * NOTE : the regex length should be < 13
+ * NOTE : the regex lenth should be < 13
  *
  * @return {RegExp}
  *
  */
 function getRegexForPitSpot() {
-  throw new Error('Not implemented');
+  return /p[ioa ]t/;
+}
+
+
+/**
+ * Returns the regexp that matches all IPv4 strings in
+ * 'XX.XX.XX.XX' dotted format where XX is number 0 to 255
+ *
+ * Valid IPv4:                       Invalid IPv4
+ * ---------------                  -----------------
+ * '0.0.0.0'                         '300.0.0.0'
+ * '127.0.0.1'                       '127.0.0.-1'
+ * '10.10.1.1'                       '23.24.25.26.27'
+ * '46.61.155.237'                   'Set dns to 8.8.8.8'
+ * '010.234.015.001'
+ *
+ * @return {RegExp}
+ */
+function getRegexForIPv4() {
+  return /^((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])(\.|$)){4}$/;
+}
+
+
+/**
+ * Returns the regexp that matches all SSN (Social Security Number) codes in
+ * 'XXX-XX-XXXX' format where X is digit, where each group can't be all zeros
+ * https://en.wikipedia.org/wiki/Social_Security_number
+ *
+ * Valid SSN:                       Invalid SSN
+ * ---------------                  -----------------
+ * '123-45-6789'                     '123456789'
+ * '234-56-2349'                     '000-56-2349'
+ * '875-43-0298'                     '875-00-0298'
+ * '034-01-0008'                     '034-01-0000'
+ *                                   '0S4-H1-HACK'
+ * @return {RegExp}
+ */
+function getRegexForSSN() {
+  return /^((?!0{3})\d{3}-(?!0{2})\d{2}-(?!0{4})\d{4})$/;
 }
 
 
@@ -78,13 +116,15 @@ function getRegexForPitSpot() {
  *   'PASSW0RD'.match(validator)  => false
  *   'Pa55'.match(validator) => false
  */
-function getPasswordValidator(/* minLength */) {
-  throw new Error('Not implemented');
+function getPasswordValidator(minLength) {
+  return new RegExp(`^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{${minLength},}$`);
 }
 
 
 module.exports = {
   getRegexForGuid,
   getRegexForPitSpot,
+  getRegexForIPv4,
+  getRegexForSSN,
   getPasswordValidator,
 };

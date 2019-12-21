@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-unused-expressions */
 /* *************************************************************************************************
  *                                                                                                *
  * Plese read the following tutorial before implementing tasks:                                   *
@@ -27,8 +29,11 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  let result = '';
+  num % 3 === 0 ? result += 'Fizz' : false;
+  num % 5 === 0 ? result += 'Buzz' : false;
+  return result === '' ? num : result;
 }
 
 
@@ -43,8 +48,8 @@ function getFizzBuzz(/* num */) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  return (n === 0) || (n === 1) ? 1 : n * getFactorial(n - 1);
 }
 
 
@@ -60,8 +65,12 @@ function getFactorial(/* n */) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  let result = 0;
+  for (let i = n1; i <= n2; i += 1) {
+    result += i;
+  }
+  return result;
 }
 
 
@@ -80,8 +89,8 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  return ((a + b > c) && (a + c > b) && (b + c > a));
 }
 
 
@@ -117,8 +126,11 @@ function isTriangle(/* a, b, c */) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  return !(rect1.top > (rect2.height + rect2.top)
+    || (rect1.top + rect1.height) < rect2.top
+    || (rect1.left + rect1.width) < rect2.left
+    || rect1.left > rect2.width + rect2.left);
 }
 
 
@@ -148,8 +160,9 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const a = Math.hypot((circle.center.x - point.x), (circle.center.y - point.y));
+  return a < circle.radius;
 }
 
 
@@ -164,8 +177,11 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  for (let i = 0; i < str.length - 3; i += 1) {
+    if (str.slice(i + 1).indexOf(str[i]) === -1) return str[i];
+  }
+  return null;
 }
 
 
@@ -191,10 +207,17 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  let start; let
+    end;
+  let result = '';
+  if (a < b) { start = a; end = b; } else { start = b; end = a; }
+  isStartIncluded ? result += '[' : result += '(';
+  // eslint-disable-next-line no-useless-concat
+  result += `${start},` + ` ${end}`;
+  isEndIncluded ? result += ']' : result += ')';
+  return result;
 }
-
 
 /**
  * Reverse the specified string (put all chars in reverse order)
@@ -208,8 +231,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -225,8 +248,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return +((`${num}`).split('').reverse().join(''));
 }
 
 
@@ -250,9 +273,23 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+
+function checkCredit(value_) {
+  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+  let value = value_;
+  value += '';
+  return value.split('')
+    .reverse()
+    .map((x) => parseInt(x, 10))
+    .map((x, idx) => (idx % 2 ? x * 2 : x))
+    .map((x) => (x > 9 ? (x % 10) + 1 : x))
+    .reduce(reducer) % 10 === 0;
 }
+
+function isCreditCardNumber(ccn) {
+  return checkCredit(ccn);
+}
+
 
 /**
  * Returns the digital root of integer:
@@ -268,8 +305,17 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+
+function summator(arr) {
+  let sum = 0;
+  for (let i = 0; i < arr.length; i += 1) {
+    sum += +arr[i];
+  }
+  return sum;
+}
+function getDigitalRoot(num) {
+  const result = summator((`${num}`).split(''));
+  return result > 9 ? getDigitalRoot(result) : result;
 }
 
 
@@ -293,9 +339,32 @@ function getDigitalRoot(/* num */) {
  *   '[[][]][' => false
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
- */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+ *
+ *  */
+function pair(bracket) {
+  switch (bracket) {
+    case ']': return '[';
+    case ')': return '(';
+    case '}': return '{';
+    case '>': return '<';
+    default: return '<';
+  }
+}
+
+function isBracketsBalanced(str) {
+  const endBrackets = [']', ')', '}', '>'];
+  const startBrackets = ['[', '(', '{', '<'];
+  str = str.split('');
+  const stack = [];
+  for (let i = 0; i < str.length; i += 1) {
+    const char = str[i];
+    if (startBrackets.includes(char)) stack.push(char);
+    else if (endBrackets.includes(char)) {
+      if (stack.length === 0) return false;
+      if (stack[stack.length - 1] === pair(char)) stack.pop();
+    }
+  }
+  return stack.length === 0;
 }
 
 
